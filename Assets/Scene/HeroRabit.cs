@@ -22,6 +22,7 @@ public class HeroRabit : MonoBehaviour
         LevelController.current.setStartPosition(transform.position);
         //class LevelController
         this.heroParent = this.transform.parent;
+        this.heroParent = null;
 
     }
     static void SetNewParent(Transform obj, Transform new_parent)
@@ -73,13 +74,12 @@ public class HeroRabit : MonoBehaviour
             //print("is not Grounded");
 
         }
-        if (hit)
-        {
+
             //Перевіряємо чи ми опинились на платформі 
             if(hit.transform != null&& hit.transform.GetComponent<MovingPlatform>() != null){ //Приліпаємо до платформи
                 SetNewParent(this.transform, hit.transform);
             }
-        }
+
         else
         {
             //Ми в повітрі відліпаємо під платформи
