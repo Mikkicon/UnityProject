@@ -12,19 +12,24 @@ public class HeroRabit : MonoBehaviour
     public float MaxJumpTime = 2f;
     public float JumpSpeed = 2f;
     Transform heroParent = null;
-
+    public static HeroRabit lastRabit = null;
+    void Awake()
+    {
+        lastRabit = this;
+    }
     // Use this for initialization
     void Start()
     {      
         float diff = Time.deltaTime;
         myBody = this.GetComponent<Rigidbody2D>();
-        print(transform.position);
+        //print(transform.position);
         LevelController.current.setStartPosition(transform.position);
         //class LevelController
         this.heroParent = this.transform.parent;
         this.heroParent = null;
 
     }
+
     static void SetNewParent(Transform obj, Transform new_parent)
     {
         if (obj.transform.parent != new_parent)
@@ -87,7 +92,7 @@ public class HeroRabit : MonoBehaviour
         }
 
         Debug.DrawLine(from, to, Color.red);
-        print(Input.GetButtonDown("Jump"));
+        //print(Input.GetButtonDown("Jump"));
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             this.JumpActive = true;
@@ -110,20 +115,21 @@ public class HeroRabit : MonoBehaviour
             {
                 this.JumpActive = false;
                 this.JumpTime = 0;
+
             }
                 
         }
-        print("Jump" + animator.GetBool("Jump"));
+        //print("Jump" + animator.GetBool("Jump"));
 
             if (this.isGrounded)
             {
                 animator.SetBool("Jump", false);
-            print("Jump on ground "+animator.GetBool("Jump"));
+            //print("Jump on ground "+animator.GetBool("Jump"));
             }
             else
             {
                 animator.SetBool("Jump", true);
-            print("Jump not on ground" + animator.GetBool("Jump"));
+            //print("Jump not on ground" + animator.GetBool("Jump"));
 
             }
 
