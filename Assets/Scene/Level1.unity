@@ -553,7 +553,13 @@ Prefab:
       propertyPath: pointB.x
       value: 21
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 95616517439019184, guid: ea67803f0d001471982cbe35f1eab298,
+        type: 2}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f704f33936fca487c921990f8e915ae2, type: 2}
+    m_RemovedComponents:
+    - {fileID: 114350281324758132, guid: ea67803f0d001471982cbe35f1eab298, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: ea67803f0d001471982cbe35f1eab298, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &310813029
@@ -1847,6 +1853,28 @@ Transform:
   m_PrefabParentObject: {fileID: 4535032054011584, guid: dfdfbe084db474967a8e91fdcae45bbb,
     type: 2}
   m_PrefabInternal: {fileID: 558028792}
+--- !u!1 &1277678690 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1986529230897356, guid: ea67803f0d001471982cbe35f1eab298,
+    type: 2}
+  m_PrefabInternal: {fileID: 297155885}
+--- !u!114 &1277678691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1277678690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dccfdc214b0414626bd25c11df148f55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  pointB: {x: 21, y: 0, z: 0}
+  Speed: 0.03
+  Timeout: 1
+  going_to_a: 0
+  prefabCarrot: {fileID: 0}
 --- !u!4 &1290576063 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4535032054011584, guid: dfdfbe084db474967a8e91fdcae45bbb,

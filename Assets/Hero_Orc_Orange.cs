@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroOrc : MonoBehaviour
+public class Hero_Orc_Orange : MonoBehaviour
 {
     public float speed = 1;
     Rigidbody2D myBody = null;
@@ -16,7 +16,25 @@ public class HeroOrc : MonoBehaviour
     private Vector3 rabit_pos;
     private float _timeToWait;
     Animator animator;
-    SpriteRenderer sr; 
+    SpriteRenderer sr;
+    public GameObject prefabCarrot;
+
+    void launchCarrot()
+    {
+        //Створюємо копію Prefab
+        GameObject obj = GameObject.Instantiate(this.prefabCarrot); 
+        obj.transform.position = this.transform.position;
+        //Запускаємо в рух
+        Carrot carrot = obj.GetComponent<Carrot>();
+        float direction;
+        if(rabit_pos.x - my_pos.x < 0){
+            direction = 1;
+        }else{
+            direction = -1;
+        }
+        carrot.launch(direction);
+
+    }
 
 
     public enum Mode
@@ -37,7 +55,7 @@ public class HeroOrc : MonoBehaviour
         pointA = this.transform.position;
         myBody = this.GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>(); 
+        sr = GetComponent<SpriteRenderer>();
 
 
     }
@@ -74,23 +92,20 @@ public class HeroOrc : MonoBehaviour
         value = this.getDirection();
         my_pos = this.transform.position;
 
-       
-            Vector2 vel = myBody.velocity;
-            animator.SetBool("Walk", true);
-            //print(animator.GetBool("Walk"));
-            vel.x = value * speed;
-            myBody.velocity = vel;
-        
 
-        if(mode == Mode.Attack){
-            if (Mathf.Abs(my_pos.x - rabit_pos.x) < 2f)
-            {
-                StartCoroutine(doSmthLater(6.0f));
-            }
-        }
-        if (mode == Mode.GoToA){
+        Vector2 vel = myBody.velocity;
+        animator.SetBool("Walk", true);
+        //print(animator.GetBool("Walk"));
+        vel.x = value * speed;
+        myBody.velocity = vel;
+
+
+
+        if (mode == Mode.GoToA)
+        {
             //print("mode == Mode.GoToA");
-            if (isArrived(pointA)){
+            if (isArrived(pointA))
+            {
                 //print("isArrived(pointA) == true");
 
                 mode = Mode.GoToB;
@@ -100,9 +115,12 @@ public class HeroOrc : MonoBehaviour
 
             my_pos = Vector3.MoveTowards(my_pos, pointA, Speed);
 
-        }else if (mode == Mode.GoToB){
+        }
+        else if (mode == Mode.GoToB)
+        {
             //print("mode == Mode.GoToB");
-            if (isArrived(pointB)){
+            if (isArrived(pointB))
+            {
                 //print("isArrived(pointB) == true");
                 mode = Mode.GoToA;
             }
@@ -111,18 +129,24 @@ public class HeroOrc : MonoBehaviour
 
 
         transform.position = my_pos;
-        sr = GetComponent<SpriteRenderer>(); 
-        if (value < 0){
+        sr = GetComponent<SpriteRenderer>();
+        if (value < 0)
+        {
             sr.flipX = false;
-        }else if (value > 0){
+        }
+        else if (value > 0)
+        {
             sr.flipX = true;
         }
 
         rabit_pos = HeroRabit.lastRabit.transform.position;
         if (HeroRabit.lastRabit.transform.position.x > Mathf.Min(pointA.x, pointB.x)
-            && HeroRabit.lastRabit.transform.position.x < Mathf.Max(pointA.x, pointB.x)){
+            && HeroRabit.lastRabit.transform.position.x < Mathf.Max(pointA.x, pointB.x))
+        {
             Rabitreachable();
-        }else if (mode == Mode.GoToRabit|| mode == Mode.Attack){
+        }
+        else if (mode == Mode.GoToRabit || mode == Mode.Attack)
+        {
             mode = Mode.GoToA;
             animator.SetBool("Walk", true);
             animator.SetBool("Attack", false);
@@ -140,50 +164,24 @@ public class HeroOrc : MonoBehaviour
 
     private void Rabitreachable()
     {
-        print("entered rabitreachable");
-        mode = Mode.GoToRabit;
-        //my_pos = Vector3.MoveTowards(my_pos, rabit_pos, Speed);
-
-        if(Mathf.Abs(my_pos.x - rabit_pos.x) > 3f) {
-            print("Mathf.Abs(my_pos.x - rabit_pos.x) < 0.2f"+(Mathf.Abs(my_pos.x - rabit_pos.x) < 0.2f));
-
-            animator.SetBool("Attack", false);
-            animator.SetBool("Run", true);
-
-            sr = GetComponent<SpriteRenderer>(); 
-            if (my_pos.x - rabit_pos.x> 0)
-            {
-                sr.flipX = false;
-            }
-            else if(my_pos.x - rabit_pos.x < 0)
-            {
-                sr.flipX = true;
-            }
-            my_pos = Vector3.MoveTowards(my_pos, rabit_pos, Speed);
-
-        }else if(Mathf.Abs(my_pos.x - rabit_pos.x) < 3f){
-            print("Mathf.Abs(my_pos.x - rabit_pos.x) < 3f" + (Mathf.Abs(my_pos.x - rabit_pos.x) < 3f));
-            mode = Mode.Attack;
-            animator.SetBool("Run", false);
+        print("Orange rabit reach");
+        if(Mathf.Abs(rabit_pos.x - my_pos.x) < 5.0f) {
             animator.SetBool("Attack", true);
-
-
-            animator.SetTrigger("Attack");
-
+            this.launchCarrot();
         }
-        transform.position = my_pos;
 
-    }
-    IEnumerator doSmthLater(float duration)
-    { //Perform action ...
-      //Wait
+        sr = GetComponent<SpriteRenderer>();
+        if (my_pos.x - rabit_pos.x > 0)
+        {
+            sr.flipX = false;
+        }
+        else if (my_pos.x - rabit_pos.x < 0)
+        {
+            sr.flipX = true;
+        }
+        my_pos = Vector3.MoveTowards(my_pos, rabit_pos, Speed);
 
-            if (HeroRabit.lastRabit != null)
-                LevelController.current.onRabitDeath(HeroRabit.lastRabit);
-        
-        yield return new WaitForSeconds(duration);
-        //Continue excution in few seconds
-        //Other actions...
+    
     }
 
 

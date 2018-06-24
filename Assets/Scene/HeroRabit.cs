@@ -44,6 +44,9 @@ public class HeroRabit : MonoBehaviour
             obj.transform.position = pos;
         }
     }
+    public void HitRabbit(){
+        LevelController.current.onRabitDeath(this);
+    }
 
     // Update is called once per frame
     void Update()
